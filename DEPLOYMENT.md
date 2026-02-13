@@ -44,11 +44,13 @@ Your video file is **89MB**, which is very close to Render's 100MB limit. **Rail
    - **Plan**: Free
 
 5. **Set Environment Variables:**
-   - `APP_ENV` = `production`
-   - `APP_DEBUG` = `false`
-   - `APP_KEY` = `base64:hzutKpmXOMnIdJqhmg7dBDJrAkVxqS7rteyabf6R6lk=`
-   - `LOG_CHANNEL` = `stderr`
-   - `LOG_LEVEL` = `error`
+   - Go to "Environment" tab in Render dashboard
+   - Add these variables manually (do NOT commit APP_KEY to git):
+     - `APP_ENV` = `production`
+     - `APP_DEBUG` = `false`
+     - `APP_KEY` = `base64:hzutKpmXOMnIdJqhmg7dBDJrAkVxqS7rteyabf6R6lk=` ⚠️ **Add this manually in dashboard, not in code**
+     - `LOG_CHANNEL` = `stderr`
+     - `LOG_LEVEL` = `error`
 
 6. **Deploy**
    - Click "Create Web Service"

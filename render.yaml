@@ -9,8 +9,6 @@ services:
         value: production
       - key: APP_DEBUG
         value: false
-      - key: APP_KEY
-        value: base64:hzutKpmXOMnIdJqhmg7dBDJrAkVxqS7rteyabf6R6lk=
       - key: LOG_CHANNEL
         value: stderr
       - key: LOG_LEVEL
