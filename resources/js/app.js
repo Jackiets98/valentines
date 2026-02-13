@@ -314,6 +314,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoLoading = document.getElementById('videoLoading');
 
     if (valentineVideo) {
+        // Detect mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Optimize video for faster buffering
+        valentineVideo.load(); // Force load immediately
+        
+        // Set buffering strategy for better performance
+        if (valentineVideo.buffered && valentineVideo.buffered.length > 0) {
+            // Try to buffer more aggressively
+            valentineVideo.preload = 'auto';
+        }
+
         // Show loading spinner while buffering
         function showLoading() {
             if (videoLoading) {
@@ -329,6 +341,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     videoLoading.classList.add('hidden');
                 }, 300);
             }
+        }
+
+        // Mobile-specific: Handle touch to start loading
+        if (isMobile) {
+            let videoTouched = false;
+            const startVideoLoad = function() {
+                if (!videoTouched) {
+                    videoTouched = true;
+                    showLoading();
+                    valentineVideo.load();
+                    // Remove listener after first touch
+                    valentineVideo.removeEventListener('touchstart', startVideoLoad);
+                    valentineVideo.removeEventListener('click', startVideoLoad);
+                }
+            };
+            valentineVideo.addEventListener('touchstart', startVideoLoad, { once: true });
+            valentineVideo.addEventListener('click', startVideoLoad, { once: true });
         }
 
         // Show loading when video starts loading
@@ -347,6 +376,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hide loading when video can play (buffered enough)
         valentineVideo.addEventListener('canplay', function() {
             hideLoading();
+            // On mobile, try to play if user has interacted
+            if (isMobile && videoTouched) {
+                valentineVideo.play().catch(() => {
+                    // Autoplay blocked, that's okay
+                });
+            }
         });
 
         // Hide loading when video can play through (fully buffered)
@@ -354,19 +389,43 @@ document.addEventListener('DOMContentLoaded', function() {
             hideLoading();
         });
 
-        // Hide loading when data is loaded
+        // Hide loading when enough data is loaded (for faster initial play)
         valentineVideo.addEventListener('loadeddata', function() {
-            hideLoading();
+            // Only hide if we have enough buffered data
+            if (valentineVideo.readyState >= 3) {
+                hideLoading();
+            }
             if (videoPlaceholder) {
                 videoPlaceholder.classList.add('hidden');
             }
         });
 
+        // Progress event - show progress on mobile
+        valentineVideo.addEventListener('progress', function() {
+            if (isMobile && valentineVideo.buffered.length > 0) {
+                const bufferedEnd = valentineVideo.buffered.end(valentineVideo.buffered.length - 1);
+                const duration = valentineVideo.duration;
+                if (duration > 0 && bufferedEnd / duration > 0.1) {
+                    // If 10% buffered, hide loading
+                    hideLoading();
+                }
+            }
+        });
+
         // Show placeholder on error
-        valentineVideo.addEventListener('error', function() {
+        valentineVideo.addEventListener('error', function(e) {
             hideLoading();
+            console.error('Video error:', valentineVideo.error);
             if (videoPlaceholder) {
                 videoPlaceholder.classList.remove('hidden');
+            }
+        });
+
+        // Handle stalled video (common on mobile)
+        valentineVideo.addEventListener('stalled', function() {
+            // Try to resume loading
+            if (isMobile) {
+                valentineVideo.load();
             }
         });
 
@@ -382,6 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         showLoading();
                         const url = URL.createObjectURL(file);
                         valentineVideo.src = url;
+                        valentineVideo.load();
                         videoPlaceholder.classList.add('hidden');
                     }
                 };
@@ -389,12 +449,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Check initial state
-            if (valentineVideo.readyState >= 2) {
+            if (valentineVideo.readyState >= 3) {
                 hideLoading();
                 videoPlaceholder.classList.add('hidden');
             } else {
+                // Start loading immediately
+                valentineVideo.load();
                 showLoading();
             }
+        } else {
+            // Start loading immediately if no placeholder
+            valentineVideo.load();
         }
     }
 });

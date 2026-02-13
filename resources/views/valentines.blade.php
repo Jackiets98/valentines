@@ -91,9 +91,8 @@
             <h2 class="text-4xl font-bold text-pink-600 text-center mb-8 font-serif">A Special One for You 💕</h2>
             <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-4 md:p-6 border-4 border-pink-200">
                 <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-pink-50">
-                    <video id="valentineVideo" class="w-full h-full object-contain" controls poster="/images/image_1.jpg">
-                        <source src="/videos/Valentines.mov" type="video/quicktime">
-                        <source src="/videos/Valentines.mov" type="video/mp4">
+                    <video id="valentineVideo" class="w-full h-full object-contain" controls playsinline webkit-playsinline preload="auto" poster="/images/image_1.jpg">
+                        <source src="/videos/Valentines.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div id="videoLoading" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 z-10 transition-opacity duration-300">
