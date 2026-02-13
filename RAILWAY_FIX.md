@@ -68,3 +68,14 @@ In Railway:
 2. Click on latest deployment
 3. Check "Build Logs" tab
 4. Look for any errors during build process
+5. **Important**: Make sure you see `npm run build` completing successfully
+6. Verify that `public/build` directory is created with `manifest.json` file
+
+### 7. CSS/Assets Not Loading
+
+If CSS is not loading:
+1. **Check APP_URL is set correctly** - This is critical for Vite assets
+2. Check Build Logs to ensure `npm run build` completed successfully
+3. Verify `public/build/manifest.json` exists in build logs
+4. Try temporarily setting `APP_DEBUG=true` to see if there are asset loading errors
+5. Check browser console for 404 errors on CSS/JS files
