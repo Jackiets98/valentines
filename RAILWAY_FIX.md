@@ -13,6 +13,7 @@ APP_KEY=base64:hzutKpmXOMnIdJqhmg7dBDJrAkVxqS7rteyabf6R6lk=
 APP_URL=https://web-production-4bbeb.up.railway.app
 LOG_CHANNEL=stderr
 LOG_LEVEL=error
+CACHE_STORE=file
 ```
 
 **Important:** Replace `web-production-4bbeb.up.railway.app` with your actual Railway URL.
@@ -38,6 +39,9 @@ LOG_LEVEL=error
 
 **Issue: Config cache problems**
 - Solution: The start command now clears cache before starting
+
+**Issue: SQLite database not found (cache error)**
+- Solution: Cache driver changed to 'file' instead of 'database'. Add `CACHE_STORE=file` to environment variables if needed.
 
 ### 4. Redeploy
 
