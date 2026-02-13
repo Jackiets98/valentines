@@ -311,35 +311,90 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const valentineVideo = document.getElementById('valentineVideo');
     const videoPlaceholder = document.getElementById('videoPlaceholder');
+    const videoLoading = document.getElementById('videoLoading');
 
-    if (valentineVideo && videoPlaceholder) {
+    if (valentineVideo) {
+        // Show loading spinner while buffering
+        function showLoading() {
+            if (videoLoading) {
+                videoLoading.classList.remove('opacity-0', 'hidden');
+                videoLoading.classList.add('opacity-100');
+            }
+        }
+
+        function hideLoading() {
+            if (videoLoading) {
+                videoLoading.classList.add('opacity-0');
+                setTimeout(() => {
+                    videoLoading.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // Show loading when video starts loading
+        valentineVideo.addEventListener('loadstart', function() {
+            showLoading();
+            if (videoPlaceholder) {
+                videoPlaceholder.classList.add('hidden');
+            }
+        });
+
+        // Show loading while waiting for data
+        valentineVideo.addEventListener('waiting', function() {
+            showLoading();
+        });
+
+        // Hide loading when video can play (buffered enough)
+        valentineVideo.addEventListener('canplay', function() {
+            hideLoading();
+        });
+
+        // Hide loading when video can play through (fully buffered)
+        valentineVideo.addEventListener('canplaythrough', function() {
+            hideLoading();
+        });
+
+        // Hide loading when data is loaded
         valentineVideo.addEventListener('loadeddata', function() {
-            videoPlaceholder.style.display = 'none';
+            hideLoading();
+            if (videoPlaceholder) {
+                videoPlaceholder.classList.add('hidden');
+            }
         });
 
+        // Show placeholder on error
         valentineVideo.addEventListener('error', function() {
-            videoPlaceholder.style.display = 'flex';
+            hideLoading();
+            if (videoPlaceholder) {
+                videoPlaceholder.classList.remove('hidden');
+            }
         });
 
-        videoPlaceholder.addEventListener('click', function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'video/*';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const url = URL.createObjectURL(file);
-                    valentineVideo.src = url;
-                    videoPlaceholder.style.display = 'none';
-                }
-            };
-            input.click();
-        });
+        // Handle file input for placeholder
+        if (videoPlaceholder) {
+            videoPlaceholder.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'video/*';
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        showLoading();
+                        const url = URL.createObjectURL(file);
+                        valentineVideo.src = url;
+                        videoPlaceholder.classList.add('hidden');
+                    }
+                };
+                input.click();
+            });
 
-        if (valentineVideo.readyState >= 2) {
-            videoPlaceholder.style.display = 'none';
-        } else {
-            videoPlaceholder.style.display = 'flex';
+            // Check initial state
+            if (valentineVideo.readyState >= 2) {
+                hideLoading();
+                videoPlaceholder.classList.add('hidden');
+            } else {
+                showLoading();
+            }
         }
     }
 });

@@ -96,12 +96,19 @@
                         <source src="/videos/Valentines.mov" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    <div id="videoPlaceholder" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 cursor-pointer hover:from-pink-200 hover:to-pink-100 transition-all">
+                    <div id="videoLoading" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 z-10 transition-opacity duration-300">
                         <div class="text-center">
-                            <div class="text-6xl mb-4">🎬</div>
+                            <div class="loading-spinner mb-4">
+                                <svg class="animate-spin h-16 w-16 text-pink-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
                             <p class="text-pink-600 text-xl font-serif mb-2">Loading your special message...</p>
-                            <p class="text-pink-400 text-sm">If video doesn't load, check your browser supports .mov files</p>
+                            <p class="text-pink-400 text-sm">Buffering video, please wait ❤️</p>
                         </div>
+                    </div>
+                    <div id="videoPlaceholder" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-pink-50 cursor-pointer hover:from-pink-200 hover:to-pink-100 transition-all hidden z-20">
                     </div>
                 </div>
             </div>
