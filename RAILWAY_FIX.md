@@ -17,7 +17,9 @@ CACHE_STORE=file
 SESSION_DRIVER=file
 ```
 
-**Important:** Replace `web-production-4bbeb.up.railway.app` with your actual Railway URL.
+**Important:** 
+- Replace `web-production-4bbeb.up.railway.app` with your actual Railway URL
+- **APP_URL MUST start with `https://` (not `http://`)** - This is critical for CSS/JS to load!
 
 ### 2. Check Railway Logs
 
