@@ -465,6 +465,10 @@
                 opacity: 1;
             }
         }
+        h1, h2, h3, h4, h5, h6, p, span, div, a, button, label, input, textarea, select {
+            filter: blur(3px);
+            -webkit-filter: blur(3px);
+        }
     </style>
 </body>
 </html>
