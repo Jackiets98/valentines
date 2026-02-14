@@ -465,15 +465,15 @@
                 opacity: 1;
             }
         }
-        * {
-            filter: blur(3px);
-            -webkit-filter: blur(3px);
+        h1, h2, h3, h4, h5, h6, p, span, a, label, li, td, th, .title-content {
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
         }
-        img, video, svg, button, input, textarea, select, canvas, iframe, embed, object {
-            filter: none !important;
-            -webkit-filter: none !important;
-        }
-        #hearts-container, .heart, .loading-spinner, .flip-card, .cat-frame img, .image-comparison-container img {
+        section, div, article, main, header, footer, body, html,
+        img, video, svg, button, input, textarea, select, canvas, iframe, embed, object,
+        .flip-card, .cat-frame, .image-comparison-container, #hearts-container, .heart,
+        .loading-spinner, #videoLoading, #valentineVideo, .flip-card-inner,
+        .day-counter-container, .timeline-container, .timeline-item {
             filter: none !important;
             -webkit-filter: none !important;
         }
